@@ -13,18 +13,21 @@ import os
 from collections import namedtuple
 import argparse
 
+'''Creation of a logger'''
 logging.basicConfig(filename='logger.log', level=logging.NOTSET,
                     datefmt='%H:%M:%S', encoding='utf-8', format='[{levelname:<8}] {asctime}: {funcName} -> {msg}', style='{')
 LOGGER = logging.getLogger(__name__)
 
+'''Creation of a parser'''
 parser = argparse.ArgumentParser(description='parsing string to date')
 parser.add_argument('-d', metavar='D', type=str,
                     help='Absolute directory path in double quotes', default='')
 
+'''Creation of a named tuple'''
 ObjectInDir = namedtuple('ObjectInDir', ['file_dir_name', 'extension',
                                          'is_directory', 'parent_dir_name'], defaults=['', 'Not applicable', True, ''])
 
-
+'''Function that goes throught all levels of directory and writes object names in logger-file'''
 def traverse_directory(directory):
     for root, dirs, files in os.walk(directory):
         for name in files:
@@ -39,6 +42,8 @@ def traverse_directory(directory):
 
 
 if __name__ == '__main__':
+    '''Trying to start working from command line.
+    If it is not successful - error is written in logger-file'''
     try:
         arg = parser.parse_args()
         traverse_directory(f'{arg.d}')
